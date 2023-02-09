@@ -33,3 +33,17 @@ async function TodoPage({ params: { todoId } }: PageProps) {
 }
 
 export default TodoPage
+
+export async function generateStaticParams() {
+  const response = await fetch("https://jsonplaceholder.typicode.com/todos")
+  const todos: Todo[] = await response.json()
+
+  //for this demo
+  const trimmedTodos = todos.splice(0, 10)
+
+  // I want it like this: [{todoId: '1'}, {todoId: '2'}, {todoId: '3'}, ...]
+  return trimmedTodos.map((todo) => ({
+    // return todos.map((todo) => ({
+    todoId: todo.id.toString()
+  }))
+}
